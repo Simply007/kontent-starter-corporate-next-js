@@ -2,7 +2,9 @@ const kontentAssetHostnames = [
   "assets-eu-01.kc-usercontent.com",
   "preview-assets-eu-01.kc-usercontent.com",
   "assets-us-01.kc-usercontent.com",
-  "preview-assets-us-01.kc-usercontent.com"
+  "preview-assets-us-01.kc-usercontent.com",
+  "assets-au-01.kc-usercontent.com",
+  "preview-assets-au-01.kc-usercontent.com"
 ];
 
 const srcIsKontentAsset = (src) => {
