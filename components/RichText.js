@@ -2,7 +2,6 @@ import { makeStyles, Typography, useTheme } from "@material-ui/core";
 import get from "lodash.get";
 import { Image, Link } from ".";
 import { getUrlFromMapping } from "../utils";
-import RichTextComponent from "./RichTextComponent";
 
 const useStyles = makeStyles((theme) => ({
   richText: {
@@ -39,21 +38,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function RichText(props) {
-    const richTextElement = get(props, "richTextElement", "");
+  const richTextElement = get(props, "richTextElement", "");
   const linkedItems = get(props, "data.page.linkedItems", []);
   const mappings = get(props, "mappings");
 
   const classes = useStyles();
   const theme = useTheme();
 
-  return (
-    <RichTextComponent
-      className={classes.richText}
-      richTextElement={richTextElement}
-      linkedItems={linkedItems}
-      mappings={mappings}
-      resolveLinkedItem={(linkedItem, domNode, domToReact) => {
-        switch (linkedItem.system.type) {
+  const portableTextComponents = {
+    types: {
+      image: ({ value }) => {
+        const image = richTextElement.assets.find(image => image.image_id === value.asset._ref);
+        return (
+          <div className={classes.inlineImage}>
+            <Image
+              sizes={`${theme.breakpoints.values.sm}px`}
+              asset={image}
+              width={theme.breakpoints.values.sm}
+              alt={image.description || image.name} />
+          </div>
+        );
+      },
+      component: (block) => {
+        const linkedItem = linkedItems.find(
+          (item) => item.system.codename === block.value.component._ref
+        );
+        const contentItemType = linkedItem ? linkedItem.system.type : "";
+
+        switch (contentItemType) {
           case "quote":
             return (
               <blockquote className={classes.quote}>
@@ -70,39 +82,71 @@ function RichText(props) {
               </Typography>
             );
           default:
-            return domToReact([domNode]);
+            return <div>Content item not supported</div>;
         }
-      }}
-      resolveImage={(image, _domNode, _domToReact) => {
-        return (
-          <div className={classes.inlineImage}>
-            <Image
-              sizes={`${theme.breakpoints.values.sm}px`}
-              asset={image}
-              width={theme.breakpoints.values.sm}
-              alt={image.description || image.name} />
-          </div>
+      },
+      table: ({ value }) => {
+        const table = (
+          <table>
+            {
+              value.rows.map(row => (
+                <tr key={row.key}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td key={cell.key}>
+                        <PortableText
+                          value={cell.content}
+                          components={portableTextComponents}
+                        />
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            }
+          </table>
         );
-      }}
-      resolveLink={(link, mappings, domNode, domToReact) => {
+        return table;
+      }
+    },
+    marks: {
+      link: ({ value, children }) => {
+        const target = (value?.href || "").startsWith("http") ? "_blank" : undefined;
+        return (
+          <a href={value?.href} target={target} rel={value?.rel} title={value?.title} data-new-window={value["data-new-window"]}>
+            {children}
+          </a>
+        );
+      },
+      internalLink: ({ value, children }) => {
+        const link = richTextElement.links.find(
+          (link) => link.linkId === value.reference._ref
+        );
+
         const url = getUrlFromMapping(mappings, link.codename);
         if (url) {
           return (
-            <Link href={url}> 
-                {domToReact(domNode.children)}
-             </Link>
+            <Link href={url}>
+              {children}
+            </Link>
           );
         }
         else {
           return (
-            <del>{domToReact([domNode])}</del>
+            <del>{children}</del>
           );
         }
-      }}
-      resolveDomNode={(domNode, _domToReact) => {
-        return domNode;
-      }}
-    />
+      },
+    },
+  };
+
+  const parsedTree = browserParse(props.element.value);
+  const portableText = transformToPortableText(parsedTree);
+
+  return (
+    <div className={classes.richText}>
+      <PortableText value={portableText} components={portableTextComponents} />
+    </div>
   );
 }
 
