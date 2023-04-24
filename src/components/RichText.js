@@ -45,28 +45,33 @@ const useStyles = makeStyles((theme) => ({
 */
 function RichText(props) {
   const richTextElement = get(props, "richTextElement", "");
-  const linkedItems = get(props, "data.page.linkedItems", []);
   const mappings = get(props, "mappings");
 
   const classes = {};
   const theme = useTheme();
 
+  if(richTextElement.type === "text")
+  {
+    return richTextElement.value;
+  }
+
   const portableTextComponents = {
     types: {
       image: ({ value }) => {
-        const image = richTextElement.assets.find(image => image.image_id === value.asset._ref);
+        const image = richTextElement.images.find(image => image.imageId === value.asset._ref);
+        const alt = image.description || image.url.split("/").pop();
         return (
           <div className={classes.inlineImage}>
             <Image
               sizes={`${theme.breakpoints.values.sm}px`}
               asset={image}
               width={theme.breakpoints.values.sm}
-              alt={image.description || image.name} />
+              alt={alt} />
           </div>
         );
       },
       component: (block) => {
-        const linkedItem = linkedItems.find(
+        const linkedItem = richTextElement.linkedItems?.find(
           (item) => item.system.codename === block.value.component._ref
         );
         const contentItemType = linkedItem ? linkedItem.system.type : "";
