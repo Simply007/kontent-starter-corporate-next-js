@@ -17,7 +17,7 @@
     "lodash.camelcase": "^4.3.0",
     "lodash.get": "^4.4.2",
     "lodash.upperfirst": "^4.3.1",
-    "next": "^12.3.4",
+    "next": "^13.3.1",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
