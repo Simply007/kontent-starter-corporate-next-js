@@ -3,5 +3,4 @@ module.exports = {
   images: {
     loader: "custom",
   },
-  target: "serverless"
 };
