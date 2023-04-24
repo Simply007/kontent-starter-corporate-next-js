@@ -1,21 +1,12 @@
 import get from "lodash.get";
 import upperFirst from "lodash.upperfirst";
 import camelCase from "lodash.camelcase";
-import { Layout, UnknownComponent } from "../components";
-import sections from "../components/sections";
-import { Box, makeStyles } from "@material-ui/core";
+import { Layout, UnknownComponent } from "../src/components";
+import sections from "../src/components/sections";
+import { Box } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  sections: {
-    "& > section:first-child": {
-      paddingTop: theme.spacing(8),
-      paddingBottom: theme.spacing(8)
-    }
-  }
-}));
 
 function LandingPage(props) {
-  const classes = useStyles();
   const page = get(props, "data.page.item", null);
 
   if (!page) {
@@ -28,7 +19,12 @@ function LandingPage(props) {
 
   return (
     <Layout {...props}>
-      <Box className={classes.sections}>
+      <Box sx={{
+        "& > section:first-child": {
+          paddingTop: (theme) => theme.spacing(10),
+          paddingBottom: (theme) => theme.spacing(10)
+        }
+      }}>
         {get(page, "elements.sections.linkedItems", []).map((section, index) => {
           const contentType = upperFirst(camelCase(get(section, "system.type", null)));
           const Component = sections[contentType];

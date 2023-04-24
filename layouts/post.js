@@ -1,15 +1,18 @@
 import get from "lodash.get";
-import { Image, Layout, RichText, UnknownComponent } from "../components";
-import { Container, makeStyles, Typography, useTheme } from "@material-ui/core";
+import { Image, Layout, RichText, UnknownComponent } from "../src/components";
+import { Container, Typography, useTheme } from "@mui/material";
 
+// import { makeStyles } from "@mui/styles";
+
+/*styles
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(4)
   }
 }));
-
+*/
 function Post(props) {
-  const classes = useStyles();
+  const classes = {};
   const post = get(props, "data.page.item", null);
 
   if (!post) {

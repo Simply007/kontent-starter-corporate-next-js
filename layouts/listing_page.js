@@ -1,12 +1,13 @@
 import get from "lodash.get";
 import upperFirst from "lodash.upperfirst";
 import camelCase from "lodash.camelcase";
-import { Layout, UnknownComponent } from "../components";
-import { Container, Grid, makeStyles, Paper } from "@material-ui/core";
-import thumbnailLayouts from "../components/thumbnails";
+import { Layout, UnknownComponent } from "../src/components";
+import { Container, Grid, Paper } from "@mui/material";
+// import { makeStyles } from "@mui/styles";
+import thumbnailLayouts from "../src/components/thumbnails";
 
 
-const useStyles = makeStyles((theme) => ({
+/*const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4)
@@ -16,9 +17,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   }
 }));
+*/
 
-function ListingPage(props) {
-  const classes = useStyles();
+ function ListingPage(props) {
+  const classes = {};
   const page = get(props, "data.page.item", null);
   if (!page) {
     return (

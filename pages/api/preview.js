@@ -1,5 +1,5 @@
-import { getSitemapMappings } from "../../lib/api";
-import { getUrlFromMapping } from "../../utils";
+import { getSitemapMappings } from "../../src/lib/api";
+import { getUrlFromMapping } from "../../src/utils";
 
 export default async function preview(req, res) {
   // Check the secret and next parameters

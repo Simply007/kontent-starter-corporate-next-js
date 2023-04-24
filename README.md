@@ -372,15 +372,16 @@ import React from "react";
 import get from "lodash.get";
 import { Container, makeStyles } from "@material-ui/core";
 
+/*styles
 const useStyles = makeStyles((_theme) => ({
   section: {
     background: "red",
   },
 }));
-
+*/
 function FeaturesSection(props) {
   const section = get(props, "section", null);
-  const classes = useStyles();
+  const classes = {};
 
   return (
     <section

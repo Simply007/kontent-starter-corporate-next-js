@@ -2,8 +2,8 @@ import React from "react";
 import get from "lodash.get";
 
 import pageLayouts from "../layouts";
-import { getSitemapMappings, getPageStaticPropsForPath } from "../lib/api";
-import UnknownComponent from "../components/UnknownComponent";
+import { getSitemapMappings, getPageStaticPropsForPath } from "../src/lib/api";
+import UnknownComponent from "../src/components/UnknownComponent";
 import { useRouter } from "next/router";
 import Error from "next/error";
 
@@ -37,7 +37,7 @@ function Page(props) {
 }
 
 export async function getStaticPaths(ctx) {
-        console.log("Page [[...slug]].js getStaticPaths", ctx);
+    console.log("Page [[...slug]].js getStaticPaths", ctx);
     const paths = await getSitemapMappings();
 
     // https://nextjs.org/docs/messages/ssg-fallback-true-export

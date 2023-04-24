@@ -1,12 +1,18 @@
 import React from "react";
 import get from "lodash.get";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { createTheme } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider } from "@emotion/react";
+
 
 import Head from "next/head";
+import createEmotionCache from "../src/createEmotionCache";
 
-function MyApp({ Component, pageProps }) {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
   const configObject = get(pageProps, "data.config", null);
 
   const font = get(configObject, "item.elements.font.value[0].codename", null);
@@ -80,59 +86,57 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
-  return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="google" content="notranslate" />
+  return <CacheProvider value={emotionCache}>
+    <Head>
+      <title>{title}</title>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="google" content="notranslate" />
 
-        {get(configObject, "item.elements.favicon.value[0]", null) && (
-          <link rel="icon" href={get(configObject, "item.elements.favicon.value[0].url", null)} />
-        )}
+      {get(configObject, "item.elements.favicon.value[0]", null) && (
+        <link rel="icon" href={get(configObject, "item.elements.favicon.value[0].url", null)} />
+      )}
 
-        <meta name="description" content={get(pageProps, "seo.description", null)} />
-        {get(pageProps, "seo.keywords", null) && (
-          <meta name="keywords" content={get(pageProps, "seo.keywords", null)} />
-        )}
-        {get(pageProps, "seo.canonicalUrl", null) ?? (
-          <link rel="canonical" href={get(pageProps, "seo.canonicalUrl", null)} />
-        )}
-        {get(pageProps, "seo.noIndex", null) && (
-          <meta name="robots" content="noindex,follow" />
-        )}
+      <meta name="description" content={get(pageProps, "seo.description", null)} />
+      {get(pageProps, "seo.keywords", null) && (
+        <meta name="keywords" content={get(pageProps, "seo.keywords", null)} />
+      )}
+      {get(pageProps, "seo.canonicalUrl", null) ?? (
+        <link rel="canonical" href={get(pageProps, "seo.canonicalUrl", null)} />
+      )}
+      {get(pageProps, "seo.noIndex", null) && (
+        <meta name="robots" content="noindex,follow" />
+      )}
 
-        {(font !== "system-sans") && (
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        )}
-        {(font === "nunito_sans") ? ([
-          <link key="0" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" rel="preload" />,
-          <link key="1" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" media="print" onLoad="this.media='all'" />,
-          <noscript key="2">
-            <link
-              rel="stylesheet"
-              href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-            />
-          </noscript>
-        ]) : ((font === "fira_sans") && ([
-          <link key="0" href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" as="style" rel="preload" />,
-          <link key="1" href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" media="print" onLoad="this.media='all'" />,
-          <noscript key="2">
-            <link
-              rel="stylesheet"
-              href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-            />
-          </noscript>
-        ]))}
+      {(font !== "system-sans") && (
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+      )}
+      {(font === "nunito_sans") ? ([
+        <link key="0" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" rel="preload" />,
+        <link key="1" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" media="print" onLoad="this.media='all'" />,
+        <noscript key="2">
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          />
+        </noscript>
+      ]) : ((font === "fira_sans") && ([
+        <link key="0" href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" as="style" rel="preload" />,
+        <link key="1" href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" media="print" onLoad="this.media='all'" />,
+        <noscript key="2">
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          />
+        </noscript>
+      ]))}
 
-      </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </>
-  );
+    </Head>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Component {...pageProps} />
+    </ThemeProvider>
+  </CacheProvider>;
 }
 
 export default MyApp;

@@ -10,9 +10,13 @@
     "lint-fix": "eslint --fix --ext .js,.jsx ."
   },
   "dependencies": {
+    "@emotion/cache": "^11.10.7",
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.6",
     "@kontent-ai/delivery-sdk": "^14.0.1",
     "@kontent-ai/rich-text-resolver": "^0.0.2",
-    "@material-ui/core": "^4.12.4",
+    "@mui/material": "^5.12.1",
     "@portabletext/react": "^2.0.3",
     "clsx": "^1.2.1",
     "lodash.camelcase": "^4.3.0",
@@ -26,8 +30,8 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^7.22.0",
-    "eslint-config-next": "^11.1.4",
+    "eslint": "^8.39.0",
+    "eslint-config-next": "^13.3.1",
     "eslint-plugin-react": "^7.32.2"
   },
   "license": "MIT"
