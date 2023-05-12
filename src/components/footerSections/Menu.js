@@ -1,16 +1,7 @@
 import React from "react";
 import get from "lodash.get";
-// import { makeStyles } from "@mui/styles";
 import { Action } from "..";
 
-/*styles
-const useStyles = makeStyles((_theme) => ({
-  noListStyle: {
-    listStyle: "none",
-    padding: 0
-  }
-}));
-*/
 function Menu(props) {
   const section = get(props, "section", null);
   const classes = {};
@@ -23,7 +14,10 @@ function Menu(props) {
       )}
 
       {get(section, "elements.actions.linkedItems[0]", null) && (
-        <ul className={classes.noListStyle}>
+        <ul style={{
+          listStyle: "none",
+          padding: 0
+        }}>
           {get(section, "elements.actions.linkedItems", []).map((action, action_idx) => {
             return (
               <li key={action_idx}>

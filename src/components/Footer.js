@@ -6,27 +6,16 @@ import camelCase from "lodash.camelcase";
 import { RichText, UnknownComponent } from ".";
 import sections from "./footerSections";
 
-/*styles
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    background: theme.palette.grey[200],
-    marginTop: theme.spacing(2),
-    paddingBottom: theme.mixins.toolbar.minHeight
-  },
-  copyright: {
-    margin: 0,
-    padding: theme.spacing(1),
-    textAlign: "center"
-  }
-}));
-*/
 function Footer(props) {
   const footerSections = get(props, "data.config.item.elements.footer_sections.linkedItems", []);
   const classes = {};
 
   return (
-    <Box className={classes.root}>
+    <Box sx={{
+      flexGrow: 1,
+      background: theme => theme.palette.grey[200],
+      marginTop: theme => theme.spacing(2),
+    }}>
       <Container>
         <footer>
           {footerSections.length > 0 && (
@@ -57,13 +46,17 @@ function Footer(props) {
           )}
 
           {get(props, "data.config.copyright.value", null) && (
-            <div className={classes.copyright}>
+            <Box sx={{
+              margin: 0,
+              padding: theme => theme.spacing(1),
+              textAlign: "center"
+            }}>
               <Divider />
               <RichText
                 {...props}
                 richTextElement={get(props, "data.config.copyright")}
               />
-            </div>
+            </Box>
           )}
         </footer>
       </Container>

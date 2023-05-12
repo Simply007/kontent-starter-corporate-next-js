@@ -90,7 +90,7 @@ function FormField(props) {
   }
 
   return (
-    <div>
+    <div {...props}>
       {fieldComponent}
     </div>
   );

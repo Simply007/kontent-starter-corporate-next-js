@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
 */
 function Form(props) {
   const form = get(props, "section", null);
-  const classes = {};
-
 
   return (
     <section id={get(form, "system.codename", null)}>
@@ -30,16 +28,18 @@ function Form(props) {
       )}
 
       {/* TODO #15 */}
-      { form && (
+      {form && (
         <form
           name={get(form, "elements.form_id.value", null)}
           id={get(form, "elements.form_id.value", null)}
           action={get(form, "elements.form_action.value", null)}
-          method="POST"
-          className={classes.form}>
+          method="POST">
 
           {get(form, "elements.fields.linkedItems", []).map((field, field_idx) => (
-            <FormField field={field} key={field_idx} />
+            <FormField field={field} key={field_idx} style={{
+              marginTop: '1em',
+              marginBottom: '1em'
+            }} />
           ))
           }
 

@@ -1,22 +1,13 @@
 import React from "react";
 import get from "lodash.get";
 import { Typography } from "@mui/material";
-// import { makeStyles } from "@mui/styles";
 import { CtaButtons, Image, RichText } from "..";
 
-/*styles
-const useStyles = makeStyles((_theme) => ({
-  content: {
-    textAlign: "center"
-  }
-}));
-*/
 function ContentSection(props) {
   const section = get(props, "section", null);
-  const classes = {};
 
-    return (
-    <section id={get(section, "system.codename", null)} className={classes.section}>
+  return (
+    <section id={get(section, "system.codename", null)} >
       {get(section, "elements.title", null) && (
         <Typography variant="h2">{get(section, "elements.title.value", null)}</Typography>
       )}
@@ -33,7 +24,7 @@ function ContentSection(props) {
       )}
 
       {get(section, "elements.content.value", null) && (
-        <Typography component="div" className={classes.content} >
+        <Typography component="div" sx={{ textAlign: 'center' }} >
           <RichText
             {...props}
             richTextElement={get(section, "elements.content", null)}
@@ -42,7 +33,7 @@ function ContentSection(props) {
       )}
 
       {get(section, "elements.actions.linkedItems", null) && (
-        <div className={classes.actions}>
+        <div>
           <CtaButtons {...props} actions={get(section, "elements.actions.linkedItems", null)} />
         </div>
       )}
