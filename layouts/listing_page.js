@@ -3,23 +3,10 @@ import upperFirst from "lodash.upperfirst";
 import camelCase from "lodash.camelcase";
 import { Layout, UnknownComponent } from "../src/components";
 import { Container, Grid, Paper } from "@mui/material";
-// import { makeStyles } from "@mui/styles";
 import thumbnailLayouts from "../src/components/thumbnails";
 
 
-/*const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
-  },
-  thumbnailPaper: {
-    height: "100%",
-    padding: theme.spacing(2),
-  }
-}));
-*/
-
- function ListingPage(props) {
+function ListingPage(props) {
   const classes = {};
   const page = get(props, "data.page.item", null);
   if (!page) {
@@ -34,7 +21,10 @@ import thumbnailLayouts from "../src/components/thumbnails";
 
   return (
     <Layout {...props}>
-      <Container className={classes.root}>
+      <Container sx={{
+        paddingTop: (theme) => theme.spacing(4),
+        paddingBottom: (theme) => theme.spacing(4)
+      }}>
         {relatedItemsData.items.length > 0 &&
           <Grid container spacing={4} alignItems="stretch">
             {relatedItemsData.items.map((item, item_idx) => {
@@ -45,7 +35,10 @@ import thumbnailLayouts from "../src/components/thumbnails";
                 console.error(`Unknown section component for section content type: ${contentType}`);
                 return (
                   <Grid item md={4} sm={12} key={item_idx}>
-                    <Paper className={classes.thumbnailPaper}>
+                    <Paper sx={{
+                      height: "100%",
+                      padding: theme => theme.spacing(2),
+                    }}>
                       <UnknownComponent {...props}>
                         <pre>{JSON.stringify(item, undefined, 2)}</pre>
                       </UnknownComponent>
@@ -57,8 +50,11 @@ import thumbnailLayouts from "../src/components/thumbnails";
 
               return (
                 <Grid variant="inbound" item md={4} sm={12} key={item_idx}>
-                  <Paper className={classes.thumbnailPaper}>
-                    <ThumbnailLayout  {...props} item={item} site={props} columnCount={3}/>
+                  <Paper sx={{
+                    height: "100%",
+                    padding: theme => theme.spacing(2),
+                  }}>
+                    <ThumbnailLayout  {...props} item={item} site={props} columnCount={3} />
                   </Paper>
                 </Grid>
               );

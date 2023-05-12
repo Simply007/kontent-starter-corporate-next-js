@@ -1,39 +1,30 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-// import { makeStyles } from "@mui/styles";
 import get from "lodash.get";
 import { Action, Image, Link, SideDrawer } from ".";
 import { Container, Hidden } from "@mui/material";
 
-
-/*styles
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  logo: {
-    width: "200px",
-  },
+const styles = {
   mainMenu: {
     flexGrow: 1,
     display: "flex",
-    justifyContent: "flex-end",
-    "& a": {
-      margin: theme.spacing(1),
-    }
+    justifyContent: "flex-end"
   }
-}));
-*/
-function Header(props) {
-  const classes = {};
+};
 
+function Header(props) {
   return (
-    <div className={classes.root}>
+    <div style={{
+      flexGrow: 1,
+    }}>
       <AppBar color="transparent" position="sticky">
         <Container>
           <Toolbar>
-            <Link href='/' className={classes.logo}>
+            <Link href='/' style={{
+              width: "200px",
+              display: "inline-block"
+            }}>
               {get(props, "data.config.item.elements.header_logo.value[0]")
                 ? (<Image
                   asset={get(props, "data.config.item.elements.header_logo.value[0]")}
@@ -45,14 +36,14 @@ function Header(props) {
               }
             </Link>
             <Hidden mdDown>
-              <div className={classes.mainMenu}>
+              <div style={styles.mainMenu}>
                 {get(props, "data.config.item.elements.main_menu.linkedItems[0].elements.actions.linkedItems", []).map((navigationItem, index) => (
-                  <Action key={index} action={navigationItem} {...props} />
+                  <Action key={index} action={navigationItem} {...props} sx={{ margin: theme => theme.spacing(1) }} />
                 ))}
               </div>
             </Hidden>
             <Hidden mdUp>
-              <div className={classes.mainMenu}>
+              <div style={styles.mainMenu}>
                 <SideDrawer navLinks={get(props, "data.config.item.elements.main_menu.linkedItems[0].elements.actions.linkedItems", [])} {...props} />
               </div>
             </Hidden>

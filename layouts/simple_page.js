@@ -2,15 +2,6 @@ import get from "lodash.get";
 import { Image, Layout, RichText, UnknownComponent } from "../src/components";
 import { Container, Typography, useTheme } from "@mui/material";
 
-// import { makeStyles } from "@mui/styles";
-
-/*styles
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: theme.spacing(4)
-  }
-}));
-*/
 function SimplePage(props) {
   const classes = {};
   const page = get(props, "data.page.item", null);
@@ -28,7 +19,9 @@ function SimplePage(props) {
 
   return (
     <Layout {...props}>
-      <Container className={classes.root} maxWidth="md">
+      <Container sx={{
+        paddingTop: theme.spacing(4)
+      }} maxWidth="md">
         {get(page, "elements.title.value", null) && (
           <Typography variant="h1">{get(page, "elements.title.value", null)}</Typography>
         )}

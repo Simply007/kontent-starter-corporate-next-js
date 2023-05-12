@@ -42,7 +42,8 @@ function Action(props) {
       size={props.size}
       href={href}
       {...config}
-      {...options}>
+      {...options}
+      {...props}>
       {action.elements.label.value}
     </Button>
   );
